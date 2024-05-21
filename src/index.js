@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const taskRoutes = require("./routes/tasksRoutes");
-const { errorHandler } = require("./middleware/tasksErrorMiddleware");
+const errorHandler = require("./middleware/tasksErrorMiddleware");
 
 const app = express();
 
