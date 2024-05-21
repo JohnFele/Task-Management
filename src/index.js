@@ -1,7 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const taskRoutes = require("./routes/tasksRoutes");
-const errorHandler = require("./middleware/tasksErrorMiddleware");
+const authRoutes = require("./routes/authRoutes");
+// const errorHandler = require("./middleware/tasksErrorMiddleware");
 
 const app = express();
 
@@ -9,8 +10,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/tasks", taskRoutes);
-
-app.use(errorHandler);
+app.use("/", authRoutes);
+// app.use(errorHandler);
 
 mongoose
   .connect('mongodb+srv://user:pass@crudtasks.f6map2j.mongodb.net/CRUD-Tasks?retryWrites=true&w=majority&appName=crudTasks')
