@@ -41,7 +41,7 @@ To test the CRUD Tasks API using Postman, follow these steps:
 
 4. **Create a New Task**
 
-   - **Endpoint**: `POST http://localhost:3000/tasks/create`
+   - **Endpoint**: `POST http://localhost:3000/tasks/`
    - **Headers**:
      - `Content-Type: application/json`
      - `Cookie`: Paste the `jwt` token from the `Set-Cookie` header of the login/signup response.

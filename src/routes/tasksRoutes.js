@@ -4,10 +4,10 @@ const taskController = require("../controllers/tasksController");
 
 const router = Router();
 
-router.post("/create", requireAuth, taskController.createTask);
+router.post("/", requireAuth, taskController.createTask);
 router.get("/", requireAuth, taskController.getAllTasks);
 router.get("/:id", requireAuth, taskController.getTaskById);
-router.put("/update/:id", requireAuth, taskController.updateTask);
-router.delete("/delete/:id", requireAuth, taskController.deleteTask);
+router.put("/:id", requireAuth, taskController.updateTask);
+router.delete("/:id", requireAuth, taskController.deleteTask);
 
 module.exports = router;

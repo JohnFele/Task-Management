@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const taskRoutes = require("./routes/tasksRoutes");
 const authRoutes = require("./routes/authRoutes");
 const cookieParser = require("cookie-parser");
-const { requireAuth, checkUser } = require("./middleware/authMiddleware");
+const { requireAuth } = require("./middleware/authMiddleware");
 const { DBURL } = require("./config/config");
 
 const app = express();
