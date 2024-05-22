@@ -16,17 +16,31 @@ module.exports.createTask = async (req, res) => {
 
 module.exports.getAllTasks = async (req, res) => {
   try {
-    const { page = 1, limit = 10 } = req.query;
-    const tasks = await Task.find({ user: req.user.id })
-      .limit(limit * 1)
+    const { 
+      page = 1, 
+      limit = 10, 
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+      filterBy = {} 
+    } = req.query;
+    const sortOrderValue = sortOrder === "asc" ? 1 : -1;
+    const sort = { [sortBy]: sortOrderValue };
+    const filter = { user: req.user.id, ...filterBy };
+    const tasks = await Task.find(filter)
+      .sort(sort)
+      .limit(parseInt(limit))
       .skip((page - 1) * limit)
       .exec();
-    const count = await Task.countDocuments({ user: req.user.id });
+    const count = await Task.countDocuments(filter);
 
     res.status(200).json({ 
       tasks,
+      totalTasks: count,
       totalPages: Math.ceil(count / limit),
-      currentPage: Number(page)
+      currentPage: Number(page),
+      sortBy,
+      sortOrder,
+      filterBy,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
