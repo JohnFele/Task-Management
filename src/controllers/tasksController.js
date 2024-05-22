@@ -2,7 +2,11 @@ const Task = require("../models/taskModel");
 
 module.exports.createTask = async (req, res) => {
   try {
-    await Task.create(req.body);
+    const task = new Task({
+      ...req.body,
+      user: req.user._id,
+    });
+    await task.save();
     res.status(201).json({ message: "Task created successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -11,8 +15,18 @@ module.exports.createTask = async (req, res) => {
 
 module.exports.getAllTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({});
-    res.status(200).json(tasks);
+    const { page = 1, limit = 10 } = req.query;
+    const tasks = await Task.find({ user: req.user._id })
+     .limit(limit * 1)
+     .skip((page - 1) * limit)
+     .exe();
+    const count = await Task.countDocuments({ user: req.user._id });
+
+    res.status(200).json({ 
+      tasks,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

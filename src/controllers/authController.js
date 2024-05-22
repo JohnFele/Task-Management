@@ -1,6 +1,6 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-const config = require("../config/config");
+const { config } = require("../config/config");
 
 const handleErrors = (err) => {
   let errors = { email: "", password: "" };
