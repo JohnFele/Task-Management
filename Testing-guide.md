@@ -1,121 +1,97 @@
-## Testing the CRUD Tasks API Using Postman
+### Task Manager API - Setup and Testing Guide
 
-To test the CRUD Tasks API using Postman, follow these steps:
+This guide provides detailed instructions on how to set up and test the Task Manager API using Postman for API testing. Follow these steps to run the app locally and perform various API operations.
 
-### Prerequisites
+---
 
-- Ensure the API server is running on `http://localhost:3000`.
-- Download and install [Postman](https://www.postman.com/downloads/).
+### 1. Prerequisites
 
-### Step-by-Step Guide
+Before getting started, ensure you have the following installed on your system:
 
-1. **Open Postman**: Launch the Postman application.
+- Node.js (version 12.x or higher)
+- MongoDB (Community Edition)
+- Postman (for API testing)
 
-2. **Signup a New User**
+### 2. Installation
 
-   - **Endpoint**: `POST http://localhost:3000/signup`
-   - **Headers**: `Content-Type: application/json`
-   - **Body** (JSON):
-     ```json
-     {
-       "email": "test@example.com",
-       "password": "password123"
-     }
-     ```
-   - **Action**: Click "Send"
-   - **Expected Response**: `{ "user": "userId" }` and a `Set-Cookie` header with the JWT token.
+1. Clone the Task Manager API repository from GitHub:
 
-3. **Login an Existing User**
+   ```
+   git clone https://github.com/JohnFele/Task-Management.git
+   ```
 
-   - **Endpoint**: `POST http://localhost:3000/login`
-   - **Headers**: `Content-Type: application/json`
-   - **Body** (JSON):
-     ```json
-     {
-       "email": "test@example.com",
-       "password": "password123"
-     }
-     ```
-   - **Action**: Click "Send"
-   - **Expected Response**: `{ "user": "userId" }` and a `Set-Cookie` header with the JWT token.
+2. Navigate to the project directory:
 
-4. **Create a New Task**
+   ```
+   cd Task-management
+   ```
 
-   - **Endpoint**: `POST http://localhost:3000/tasks/`
-   - **Headers**:
-     - `Content-Type: application/json`
-     - `Cookie`: Paste the `jwt` token from the `Set-Cookie` header of the login/signup response.
-   - **Body** (JSON):
-     ```json
-     {
-       "title": "New Task",
-       "description": "This is a new task",
-       "completed": false
-     }
-     ```
-   - **Action**: Click "Send"
-   - **Expected Response**: `{ "message": "Task created successfully" }`
+3. Install dependencies using npm:
 
-5. **Get All Tasks**
+   ```
+   npm install
+   ```
 
-   - **Endpoint**: `GET http://localhost:3000/tasks`
-   - **Headers**:
-     - `Content-Type: application/json`
-     - `Cookie`: Paste the `jwt` token from the `Set-Cookie` header of the login/signup response.
-   - **Query Parameters**:
-     - `page`: `1` (default)
-     - `limit`: `10` (default)
-   - **Action**: Click "Send"
-   - **Expected Response**: A JSON object containing tasks, total pages, and the current page.
+### 3. Configuration
 
-6. **Get a Task by ID**
+Place the provided `.env` file in the project root directory.
 
-   - **Endpoint**: `GET http://localhost:3000/tasks/:id`
-   - **Headers**:
-     - `Content-Type: application/json`
-     - `Cookie`: Paste the `jwt` token from the `Set-Cookie` header of the login/signup response.
-   - **Params**: Replace `:id` with the actual task ID.
-   - **Action**: Click "Send"
-   - **Expected Response**: A JSON object containing the task details.
 
-7. **Update a Task**
+### 4. Running the App
 
-   - **Endpoint**: `PUT http://localhost:3000/tasks/update/:id`
-   - **Headers**:
-     - `Content-Type: application/json`
-     - `Cookie`: Paste the `jwt` token from the `Set-Cookie` header of the login/signup response.
-   - **Params**: Replace `:id` with the actual task ID.
-   - **Body** (JSON):
-     ```json
-     {
-       "title": "Updated Task",
-       "description": "This is an updated task",
-       "completed": true
-     }
-     ```
-   - **Action**: Click "Send"
-   - **Expected Response**: A JSON object containing the updated task details.
+Run the Task Manager API application:
 
-8. **Delete a Task**
+   ```
+   npm start
+   ```
 
-   - **Endpoint**: `DELETE http://localhost:3000/tasks/delete/:id`
-   - **Headers**:
-     - `Content-Type: application/json`
-     - `Cookie`: Paste the `jwt` token from the `Set-Cookie` header of the login/signup response.
-   - **Params**: Replace `:id` with the actual task ID.
-   - **Action**: Click "Send"
-   - **Expected Response**: `{ "message": "Task successfully deleted" }`
+   The API will be running at `http://localhost:3000`.
 
-9. **Logout a User**
+### 5. Testing with Postman
 
-   - **Endpoint**: `POST http://localhost:3000/logout`
-   - **Action**: Click "Send"
-   - **Expected Response**: Redirects to the homepage and clears the JWT cookie.
+1. Open Postman and create a new request collection for Task Manager API.
 
-### Summary
+2. Create a new environment in Postman and add the following variables:
 
-- **Headers**: Always set `Content-Type` to `application/json` for POST, PUT, and DELETE requests.
-- **Authentication**: Use the `jwt` token from the `Set-Cookie` header for authenticated routes.
-- **Endpoints**: Test all CRUD operations for tasks, along with user authentication routes.
+   - `base_url`: `http://localhost:3000`
 
-By following this guide, you can thoroughly test the CRUD Tasks API using Postman, ensuring all functionalities are working as expected.
+3. Create and execute requests for different API endpoints:
+
+   - **Authentication Endpoints**:
+     - Signup: `POST {{base_url}}/signup`
+     - Login: `POST {{base_url}}/login`
+     - Logout: `GET {{base_url}}/logout`
+
+   - **Task Endpoints**:
+     - Create Task: `POST {{base_url}}/tasks`
+     - Get All Tasks: `GET {{base_url}}/tasks`
+     - Get Task by ID: `GET {{base_url}}/tasks/:id`
+     - Update Task: `PUT {{base_url}}/tasks/:id`
+     - Delete Task: `DELETE {{base_url}}/tasks/:id`
+
+   Ensure to include necessary request headers and body parameters as per API documentation.
+
+### 6. Testing Scenarios
+
+- **User Authentication**:
+  - Create a new user account using the signup endpoint.
+  - Log in with the newly created user credentials and obtain a JWT token.
+  - Use the token for subsequent authenticated requests.
+
+- **Task Management**:
+  - Create tasks using the create task endpoint.
+  - Retrieve tasks using the get all tasks endpoint.
+  - Update and delete tasks using their respective endpoints.
+
+### 7. Handling Responses
+
+- Check the response status codes and body content for each request.
+- Verify that error responses include meaningful error messages for debugging.
+
+### 8. Cleanup
+
+After testing, remember to log out or clear the JWT token from Postman cookies.
+
+---
+
+You have successfully set up the Task Manager API and tested its functionality using Postman. Explore different endpoints and scenarios to ensure all features work as expected. If you encounter any issues, refer to the API documentation or the error messages for troubleshooting.
